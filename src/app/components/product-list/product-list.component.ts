@@ -1,70 +1,100 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { VariablesService } from '../../services/variables.service';
 import { Store } from '@ngrx/store';
-import { Observable } from 'rxjs';
-import { increaseItemQuantityAction } from '../../state/cartState/cart.actions';
-import { IProduct } from '../../interfaces/product-item';
+import { map, Observable } from 'rxjs';
+import { addToCart, decreaseQuantity, fetchProducts, increaseQuantity, removeFromCart } from '../../state/cartState/cart.actions';
+import { fetchProductsSelector, selectCartItems, selectTotalOrder} from '../../state/cartState/cart.selectors';
+import { ICart, IProduct } from '../../interfaces/product-item';
+import { CartState } from '../../state/cartState/cart.reducer';
+import { ModalComponent } from '../modal/modal.component';
+import {
+  MatDialog,
+  MatDialogActions,
+  MatDialogClose,
+  MatDialogContent,
+  MatDialogTitle,
+} from '@angular/material/dialog';
 
 @Component({
   selector: 'app-product-list',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, ModalComponent],
   templateUrl: './product-list.component.html',
   styleUrl: './product-list.component.scss'
 })
 export class ProductListComponent {
-  // @Input() set Product(prod: Product) {
-  //   this.product = prod;
-  //   if (prod?.previousPrice > prod?.currentPrice)
-  //     this.discount = ((prod.previousPrice - prod.currentPrice) / prod.previousPrice) * 100;
-  //   // console.log(this.discount);
-  //   console.log(prod);
-  //   this.photoUrl = StoreService.getPhotoUrlByDisplayTypeLocal(this.product.photos, PHOTO_DISPLAY_TYPES.COVER, true, true);
-  // }
-
-
-  // get Product() {
-  //   return this.product;
-  // }
-  counter:Observable<IProduct> = this.store.select('Products');
+  readonly dialog = inject(MatDialog);
+  products: Observable<IProduct[]> = this.store.select(fetchProductsSelector);
+  cart: Observable<ICart[]> = this.store.select(selectCartItems);
+  totalOrder: Observable<any> = this.store.select(selectTotalOrder);
   constructor(
-    public variables:VariablesService,
-    private store:Store<{Products:IProduct}>
-  ){
-    
+    public variables: VariablesService,
+    private store: Store<{ cart: CartState }>
+  ) {
+
+    this.store.dispatch(fetchProducts());
+    this.products.subscribe((res) => {
+      console.log('Products from selector:', res);  // Debug log to check the fetched products
+    });
+
+    this.cart.subscribe(res => {
+      console.log('Cart items:', res);
+    });
+
   }
   changeIcon(state:boolean, hoveredItem:string){
     this.variables[`${hoveredItem}`] = state
     console.log(this.variables[`${hoveredItem}`]);
     
   }
-  goToProduct() {
-  //   this.storeService.setSelectedProductLocal(this.product).then(() => {
-  //     this.router.navigateByUrl(Urls.productDetails + '/' + this.product?.id);
-  //   });
+
+  getQuantity(product: IProduct): Observable<number> {
+    return this.cart.pipe(
+      map(cartItems => {
+        const cartItem = cartItems.find(item => item.id === product.id);
+        return cartItem ? cartItem.quantity : 0;
+      })
+    );
   }
 
-  getCategory() {
-    // if (this.product?.productCategoryItems?.length > 0) {
-    //   return this.product?.productCategoryItems[0]?.name
-    // }
-    // return '';
+  increaseQuantity(item: IProduct) {
+    this.store.dispatch(increaseQuantity({ productId: item.id }));
   }
 
-
-  // get IsNew() {
-  //   if (UtilityService.calcDatesDiffInDays(this.product?.dateCreated) <= 7) // within 7 days means new
-  //     return true;
-  //   return false;
-  // }
-
-  increaseProductInCart(){
-    this.store.dispatch(increaseItemQuantityAction())
+  decreaseQuantity(item: IProduct) {
+    this.store.dispatch(decreaseQuantity({ productId: item.id }));
   }
 
-  addToCart() {
+  addToCart(product:any) {
+    const item = {product:{...product, quantity:1}}
+    console.log(item)
+    this.store.dispatch(addToCart(item))
+  }
+  isInCart(product: IProduct): Observable<boolean> {
+    return this.cart.pipe(
+      map(items => items.some(item => item.id === product.id))
+    );
+  }
+  removeFromCart(productId:number){
+    this.store.dispatch(removeFromCart({productId:productId}))
+  }
 
+  confirmOrder(){
+    this.openConfirmOrderDialog()
+  }
+
+  openConfirmOrderDialog(): void {
+    this.cart.subscribe((cart:ICart[]) => {
+      const dialogRef = this.dialog.open(ModalComponent, {
+        data: cart || [] 
+      });
+
+      dialogRef.afterClosed().subscribe(result => {
+        if (result?.confirmed) {
+        }
+      });
+    });
   }
 }
 

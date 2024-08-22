@@ -140,7 +140,6 @@
     display: grid;
     grid-template-columns: 1fr;
     gap: 1.5rem;
-    // margin: 1.5rem;
 }
 @media only screen and (min-width: 768px){
     .page-elements{
@@ -148,6 +147,10 @@
     }
     .product-list{
         grid-template-columns: 1fr 1fr 1fr;
+    }
+    .modal{
+        margin-left:2.5rem !important;
+        margin-right:2.5rem !important;
     }
 }
 
@@ -162,3 +165,16 @@
         gap:2rem;
     }
 }
+
+.unfocused{
+    &:hover{
+        cursor: pointer;
+    }
+}
+.focused{
+    &:hover{
+        opacity: 0;
+        cursor: pointer;
+    }
+}
+
