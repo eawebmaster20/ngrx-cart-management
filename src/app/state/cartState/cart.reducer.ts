@@ -1,21 +1,36 @@
 import { createReducer, on } from "@ngrx/store";
-import { decreaseItemQuantityAction, deleteCartItem, increaseItemQuantityAction, reset } from "./cart.actions";
-import { IProduct } from "../../interfaces/product-item";
+import { addToCart, clearCart, increaseQuantity, fetchProducts, fetchProductsSucess, decreaseQuantity, removeFromCart } from "./cart.actions";
+import { ICart, IProduct } from "../../interfaces/product-item";
 
-const cartInitialState:IProduct ={
-    image: {
-         thumbnail: "./assets/images/image-waffle-thumbnail.jpg",
-         mobile: "./assets/images/image-waffle-mobile.jpg",
-         tablet: "./assets/images/image-waffle-tablet.jpg",
-         desktop: "./assets/images/image-waffle-desktop.jpg"
-    },
-    name: "Waffle with Berries",
-    category: "Waffle",
-    price: 6.50
- }
+export interface CartState {
+  items: ICart[];
+  productList: IProduct[];  
+}
+const cartInitialState:CartState={
+  items: [],
+  productList: []
+}
 export const cartReducer = createReducer(
     cartInitialState,
-    on(increaseItemQuantityAction, (state) => state),
-    on(decreaseItemQuantityAction, (state) => state),
-    on(deleteCartItem, (state) => state)
+    on(addToCart, (state, {product})=>({...state, items:[...state.items, product]})),
+    on(removeFromCart, (state, {productId})=>({...state, items:state.items.filter(item=>item.id !== productId)})),
+    on(clearCart, state=>({...state, item:[]})),
+    on(fetchProducts, (state) => state),
+    on(fetchProductsSucess, (state, { payload }) => ({...state, productList: payload})),
+    on(increaseQuantity, (state, { productId }) => ({
+      ...state,
+      items: state.items.map(item =>
+        item.id === productId
+          ? { ...item, quantity: item.quantity + 1 }
+          : item
+      )
+    })),
+    on(decreaseQuantity, (state, { productId }) => ({
+      ...state,
+      items: state.items.map(item =>
+        item.id === productId && item.quantity > 1
+          ? { ...item, quantity: item.quantity - 1 }
+          : item
+      )
+    }))
   );

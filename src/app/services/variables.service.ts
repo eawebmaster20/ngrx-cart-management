@@ -26,7 +26,8 @@ export class VariablesService{
     },
     name: "Waffle with Berries",
     category: "Waffle",
-    price: 6.50
+    price: 6.50,
+    id:1
  }
   constructor() {  }
 }
