@@ -43,7 +43,7 @@
         </div>
         </div>
         <div class="cart">
-            <h1 class="cart-title">Your Cart (7)</h1>
+            <h1 class="cart-title">Your Cart ({{ (cart | async)?.length}})</h1>
             <div>
                 @for(item of cart | async; track item){
                     <div class="cart-item">
@@ -86,13 +86,3 @@
             }
     </div>
 </div>
-<!-- <div class="modal-container">
-    <div class="modal">
-    <app-modal
-      [cart]="(cart | async) ?? []" 
-      [totalOrder]="totalOrder | async"
-      [variables]="variables"
-      (removeItemFromCart)="removeFromCart($event)">
-    </app-modal>
-    </div>
-  </div> -->

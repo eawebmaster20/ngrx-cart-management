@@ -9,11 +9,7 @@ import { ICart, IProduct } from '../../interfaces/product-item';
 import { CartState } from '../../state/cartState/cart.reducer';
 import { ModalComponent } from '../modal/modal.component';
 import {
-  MatDialog,
-  MatDialogActions,
-  MatDialogClose,
-  MatDialogContent,
-  MatDialogTitle,
+  MatDialog
 } from '@angular/material/dialog';
 
 @Component({
@@ -81,20 +77,15 @@ export class ProductListComponent {
   }
 
   confirmOrder(){
-    this.openConfirmOrderDialog()
-  }
-
-  openConfirmOrderDialog(): void {
-    this.cart.subscribe((cart:ICart[]) => {
-      const dialogRef = this.dialog.open(ModalComponent, {
-        data: cart || [] 
-      });
-
-      dialogRef.afterClosed().subscribe(result => {
-        if (result?.confirmed) {
+      this.dialog.open(ModalComponent,
+        {
+          height: '80%',
+          position: {
+            bottom: '0',
+          }
         }
-      });
-    });
+      )
   }
+
 }
 

@@ -1,11 +1,12 @@
-<mat-dialog-content>
+<div class="mat-dialog-content">
   <div class="modal-container">
       <div class="modal">
           <div class="cart">
-              <h1 class="cart-title">Your Cart ({{ cart!.length }})</h1>
-              @if(cart && cart.length > 0){
+              <h1 class="cart-title">Your Cart ({{ (cart | async)?.length}})</h1>
+              @if((cart | async)?.length){
                   <div>
-                      @for(item of cart;track item){
+                    <mat-dialog-content>
+                      @for(item of cart | async;track item){
                           <div class="cart-item">
                             <h4 class="cart-item-name">{{ item.name }}</h4>
                             <div class="item-calculation">
@@ -21,15 +22,12 @@
                                  alt="icon">
                           </div>
                       }
+                    </mat-dialog-content>
                     <div class="hr"></div>
                 
                     <div class="cart-total">
                       <span class="cart-total-price">Order Total</span>
-                      <h2 class="cart-total-title">${{ totalOrder }}</h2>
-                    </div>
-                    <div class="delivery-service-tag">
-                      <img src="assets/carbon-neutral.svg" alt="carbon-neutral">
-                      <span>This is a <strong>carbon-neutral</strong> delivery</span>
+                      <h2 class="cart-total-title">${{ totalOrder | async }}</h2>
                     </div>
                     <button class="confirm-order-btn" (click)="confirmOrder()">
                       Confirm Order
@@ -40,4 +38,4 @@
             </div>
       </div>
   </div>
-</mat-dialog-content>
+</div>
