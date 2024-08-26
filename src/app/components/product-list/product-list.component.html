@@ -6,7 +6,12 @@
             @for(product of products | async; track product){
                 <div class="product-item-container">
                     <div class="info-up">
-                        <img class="product-img" [src]="product.image.desktop" alt="cart-item-image">
+                        <picture class="pic">
+                            <source media="(min-width: 768px)" type="image/webp" [srcset]="product.image.tablet">
+                            <source media="(min-width: 1024px)" type="image/jpeg" [srcset]="product.image.desktop">
+                            <img class="product-img" [src]="product.image.mobile" alt="cart-item-image">
+                        </picture>
+                        <!-- <img class="product-img" [src]="product.image.desktop" alt="cart-item-image"> -->
                         @if(!(isInCart(product) | async)){
                             <button (click)="addToCart(product)" class="basic-btn add-to-cart-btn">
                                 <img [src]="variables.imgUrls['cartIcon']" alt="" srcset="">
@@ -15,21 +20,13 @@
                         }
                         @else {
                             <button class="basic-btn inc-dec-cart-btn">
-                                <img (click)="decreaseQuantity(product)"
-                                    [src]="variables['removeFromCart'] ? 
-                                    variables.imgUrls.removeFromCart: 
-                                    variables.imgUrls.removeFromCartHovered" 
-                                    alt="" srcset=""
-                                >
+                                <span (click)="decreaseQuantity(product)" class="reduce-cart-item">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="10" height="2" fill="none" viewBox="0 0 10 2"><path id="decreaseIcon" fill="#fff" d="M0 .375h10v1.25H0V.375Z"/></svg>
+                                </span>
                                 <span>{{ (getQuantity(product) | async) }}</span>
-                                <img (click)="increaseQuantity(product)"
-                                    (mouseover)="changeIcon(true, 'addToCartHovered')" 
-                                    (mouseleave)="changeIcon(false, 'addToCartHovered')" 
-                                    [src]="variables['addToCartHovered'] ? 
-                                    variables.imgUrls.addToCart:  
-                                    variables.imgUrls.addToCartHovered"  
-                                    alt="" srcset=""
-                                >
+                                <span class="increase-cart-item" (click)="increaseQuantity(product)">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" fill="none" viewBox="0 0 10 10"><path id="increaseIcon" fill="#fff" d="M10 4.375H5.625V0h-1.25v4.375H0v1.25h4.375V10h1.25V5.625H10v-1.25Z"/></svg>
+                                </span>
                             </button>
                         }
                     </div>
@@ -39,6 +36,8 @@
                         <span class="product-price">{{product.price | currency}}</span>
                     </div>
                 </div>
+            }@empty {
+                <span>loading...</span>
             }
         </div>
         </div>
@@ -88,3 +87,5 @@
             }
     </div>
 </div>
+
+<app-modal [class]="variables.showModal ? 'show':'hide'"/>

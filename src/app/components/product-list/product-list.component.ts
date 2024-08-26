@@ -77,14 +77,9 @@ export class ProductListComponent {
   }
 
   confirmOrder(){
-      this.dialog.open(ModalComponent,
-        {
-          height: '80%',
-          position: {
-            bottom: '0',
-          }
-        }
-      )
+    this.variables.showModal = !this.variables.showModal
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    document.body.style.overflow="hidden"
   }
 
 }

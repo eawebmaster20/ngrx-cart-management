@@ -23,14 +23,14 @@ export class ModalComponent {
     
     // @Output() orderConfirmed = new EventEmitter<void>();
     // @Output() removeItemFromCart = new EventEmitter<number>();
-    data = inject(MAT_DIALOG_DATA);
+    // data = inject(MAT_DIALOG_DATA);
     cart: Observable<ICart[]> = this.store.select(selectCartItems);
     totalOrder: Observable<any> = this.store.select(selectTotalOrder);
     constructor(
       public variables: VariablesService,
       private store: Store<{ cart: CartState }>
     ){
-      console.log(this.data);
+      // console.log(this.data);
     }
     trackById(index: number, item: ICart) {
       return item.id;

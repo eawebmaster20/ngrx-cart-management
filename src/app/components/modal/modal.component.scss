@@ -1,5 +1,16 @@
 .mat-dialog-content{
-    overflow: none !important;
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 5;
+    width: 100%;
+    height: 100%;
+    background: #00000080;
+    display: flex;
+    body{
+        overflow: hidden;
+    }
     .cart{
         display: flex;
         flex-direction: column;
@@ -9,6 +20,13 @@
         gap: 1.5rem;
         border-radius: 0.5rem;
         height: fit-content;
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        width: calc(100% - 2rem);
+        .confirmed-icon{
+            width: 48px;
+        }
         .cart-title{
             color: var(--red);
         }
@@ -86,5 +104,18 @@
             background-color: white;
             border-radius: 0.5rem;
         }
+    }
+}
+
+
+@media (min-width: 768px) {
+    .mat-dialog-content{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        .cart {
+            position: static !important;
+        }
+
     }
 }

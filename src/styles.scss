@@ -56,5 +56,43 @@ h4{
     padding: 0 0.8rem;
     background-color: var(--red);
     color: var(--white);
+
+    .reduce-cart-item{
+        width: 17.5px;
+        height: 17.5px;
+        border-radius: 50%;
+        place-content: center;
+        display: grid;
+        border: 1.5px solid var(--white);
+        background-color: transparent;
+
+        &:hover{
+            background-color: var(--white);
+            #decreaseIcon{
+                fill:black !important
+            }
+        }
+    }
+    .increase-cart-item{
+        width: 17.5px;
+        place-content: center;
+        display: grid;
+        height: 17.5px;
+        border-radius: 50%;
+        border: 1.5px solid var(--white);
+        background-color: transparent;
+        &:hover{
+            background-color: var(--white);
+            #increaseIcon{
+                fill:black !important
+            }
+        }
+    }
+}
+.show{
+    display: block !important;
+}
+.hide{
+    display: none !important;
 }
 html, body { height: 100%; }

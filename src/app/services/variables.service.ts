@@ -6,6 +6,7 @@ import { IProduct } from '../interfaces/product-item';
 })
 export class VariablesService{
   [key: string]: any;
+  showModal: boolean = false;
   imgUrls={
     reduceCart:'assets/reduce_cart.svg',
     reduceCartHovered:'assets/reduce_cart_hovered.svg',
