@@ -39,6 +39,7 @@
             flex-direction: column;
             .product-short-name{
                 color: var(--rose-300);
+                font-size: 14px;
             }
             .product-long-name{
                 margin: 0;
@@ -49,7 +50,7 @@
             }
             .product-price{
                 color: var(--red);
-                font-size: 24px;
+                font-size: 16px;
                 font-weight: 600;
             }
         }
@@ -63,6 +64,10 @@
         gap: 1.5rem;
         border-radius: 0.5rem;
         height: fit-content;
+
+        h4, .item-calculation{
+            font-size: 14px;
+        }
         .cart-title{
             color: var(--red);
         }
@@ -132,6 +137,7 @@
         .cart-empty{
             display: flex;
             flex-direction: column;
+            align-items: center;
         }
     }
 }
@@ -178,3 +184,7 @@
     }
 }
 
+.cart-empty-img{
+    width: 128px;
+    height: 128px;
+}

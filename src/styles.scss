@@ -21,6 +21,16 @@ h1,h2,h3,h4,h5,h6{
     margin: 0;
 }
 
+h1{
+    font-size: 40px;
+}
+h2{
+    font-size: 24px;
+}
+
+h4{
+    font-size: 16px;
+}
 .basic-btn{
     width: 160px;
     height: 44px;
@@ -48,4 +58,3 @@ h1,h2,h3,h4,h5,h6{
     color: var(--white);
 }
 html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
