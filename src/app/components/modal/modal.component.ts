@@ -7,7 +7,7 @@ import { CartState } from '../../state/cartState/cart.reducer';
 import { Store } from '@ngrx/store';
 import { VariablesService } from '../../services/variables.service';
 import { CommonModule } from '@angular/common';
-import { removeFromCart } from '../../state/cartState/cart.actions';
+import { clearCart, removeFromCart } from '../../state/cartState/cart.actions';
 
 @Component({
   selector: 'app-modal',
@@ -34,6 +34,7 @@ export class ModalComponent {
         this.variables.showModal = !this.variables.showModal
         window.scrollTo({ top: 0, behavior: 'smooth' });
         document.body.style.overflow="scroll"
+        this.store.dispatch(clearCart())
       }
     }
 }
