@@ -7,6 +7,7 @@ import { CartState } from '../../state/cartState/cart.reducer';
 import { Store } from '@ngrx/store';
 import { VariablesService } from '../../services/variables.service';
 import { CommonModule } from '@angular/common';
+import { removeFromCart } from '../../state/cartState/cart.actions';
 
 @Component({
   selector: 'app-modal',
@@ -17,30 +18,22 @@ import { CommonModule } from '@angular/common';
   styleUrl: './modal.component.scss'
 })
 export class ModalComponent {
-    // @Input() cart: ICart[] = [];
-    // @Input() totalOrder: number = 0;
-    // @Input() variables: any;
-    
-    // @Output() orderConfirmed = new EventEmitter<void>();
-    // @Output() removeItemFromCart = new EventEmitter<number>();
-    // data = inject(MAT_DIALOG_DATA);
     cart: Observable<ICart[]> = this.store.select(selectCartItems);
     totalOrder: Observable<any> = this.store.select(selectTotalOrder);
     constructor(
       public variables: VariablesService,
       private store: Store<{ cart: CartState }>
     ){
-      // console.log(this.data);
     }
     trackById(index: number, item: ICart) {
       return item.id;
     }
   
-    confirmOrder() {
-      // this.orderConfirmed.emit();
-    }
-  
-    removeItem(productId: number) {
-      // this.removeItemFromCart.emit(productId);
+    confirmOrder(event: Event) {
+      if((event.target as HTMLElement).getAttribute('id') === 'confirmOrder'){
+        this.variables.showModal = !this.variables.showModal
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        document.body.style.overflow="scroll"
+      }
     }
 }

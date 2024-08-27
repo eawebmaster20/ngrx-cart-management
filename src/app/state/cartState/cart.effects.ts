@@ -31,7 +31,8 @@ export class CartEffects {
       exhaustMap(() =>
         this.api.fetchProducts().pipe(
           map((data) => {
-            console.log('API data fetched:', data);  // Debug log
+            console.log('API data fetched:', data);  
+            localStorage.setItem('data',JSON.stringify(data))
             return fetchProductsSucess({ payload: data });
           }),
           catchError((error) => {

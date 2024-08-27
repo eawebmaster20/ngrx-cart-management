@@ -29,13 +29,13 @@ export class ProductListComponent {
     private store: Store<{ cart: CartState }>
   ) {
 
-    this.store.dispatch(fetchProducts());
-    this.products.subscribe((res) => {
-      console.log('Products from selector:', res);  // Debug log to check the fetched products
-    });
+    this.store.dispatch(fetchProducts());////////
+    // this.products.subscribe((res) => {
+    //   console.log('Products from selector:', res);  // Debug log to check the fetched products
+    // });
 
     this.cart.subscribe(res => {
-      console.log('Cart items:', res);
+      // console.log('Cart items:', res);
     });
 
   }
